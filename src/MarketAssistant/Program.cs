@@ -4,6 +4,7 @@ var products = new Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmoun
     {"Brasno 1kg",(DateOnly.FromDateTime(DateTime.Now.AddDays(356)), 26, 7)},
     {"Coca Cola 500ml",(DateOnly.FromDateTime(DateTime.Now.AddDays(-100)), 26, 7)},
 };
+
 var mainMenuItems = new List<(int Id, string Name)>
 {
     (1, "Artikli"),
@@ -12,6 +13,7 @@ var mainMenuItems = new List<(int Id, string Name)>
     (4, "Statistika"),
     (5, "Izlaz iz aplikacije")
 };
+
 static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount)>? products)
 {
     var productMenuItems = new List<(int Id, string Name)>
