@@ -48,3 +48,26 @@ static int DisplayMenuAndPick(List<(int Id, string Name)> menuItems)
     }
 
 }
+
+while (true)
+{
+    switch (DisplayMenuAndPick(mainMenuItems))
+    {
+        case 1:
+            ProductsMenu(products);
+            break;
+        case 2:
+            WorkersMenu();
+            break;
+        case 3:
+            BillsMenu();
+            break;
+        case 4:
+            StatisticsMenu();
+            break;
+        case 5:
+            return;
+        default:
+            throw new InvalidOperationException("This should never happen.");
+    }
+}
