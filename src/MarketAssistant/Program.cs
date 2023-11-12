@@ -104,6 +104,24 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
 
     }
 }
+
+static void WorkersMenu()
+{
+    throw new NotImplementedException();
+}
+
+static void BillsMenu()
+{
+    throw new NotImplementedException();
+}
+
+static void StatisticsMenu()
+{
+    throw new NotImplementedException();
+}
+
+
+
 static int DisplayMenuAndPick(List<(int Id, string Name)> menuItems)
 {
     while (true)
