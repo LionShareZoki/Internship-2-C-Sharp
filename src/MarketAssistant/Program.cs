@@ -1,3 +1,9 @@
+var products = new Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount)>()
+{
+    {"Riza 500g",(DateOnly.FromDateTime(DateTime.Now.AddDays(600)), 26, 7)},
+    {"Brasno 1kg",(DateOnly.FromDateTime(DateTime.Now.AddDays(356)), 26, 7)},
+    {"Coca Cola 500ml",(DateOnly.FromDateTime(DateTime.Now.AddDays(-100)), 26, 7)},
+};
 static int DisplayMenuAndPick(List<(int Id, string Name)> menuItems)
 {
     while (true)
