@@ -34,10 +34,10 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
             DeleteProductAction(products);
             break;
         case 3:
-            Console.WriteLine("uredivanje");
+            UpdateProductAction(products);
             break;
         case 4:
-            Console.WriteLine("ispis");
+            PrintProductAction(products);
             break;
         case 5:
             Console.WriteLine("glavni izb");
