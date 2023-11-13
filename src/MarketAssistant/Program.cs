@@ -67,7 +67,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
         }
 
         Console.WriteLine("Unesite cijenu proizvoda");
-        if(!int.TryParse(Console.ReadLine(), out int price))
+        if (!int.TryParse(Console.ReadLine(), out int price))
         {
             Console.WriteLine("Neispravan unos za cijenu. Molim vas unesite broj.");
             return;
@@ -104,7 +104,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
 
                 foreach (var item in products)
                 {
-                    if(item.Value.DateOfExpiry <= currentDate) products.Remove(item.Key);
+                    if (item.Value.DateOfExpiry <= currentDate) products.Remove(item.Key);
                     
                 }
                 Console.WriteLine("Proizvodi s isteklim datumom trajanja uspješno su uklonjeni");
@@ -129,6 +129,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
         {
         (1, "Promijeni količinu proizvoda"),
         (2, "Promijeni količinu prodanih proizvoda"),
+        (3, "Promijeni cijenu proizvoda")
         };
 
         switch (DisplayMenuAndPick(updateProductMenuItems))
@@ -137,7 +138,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                 Console.WriteLine("Izaberite proizvod koji želite urediti");
                 var name = Console.ReadLine();
 
-                switch(DisplayMenuAndPick(updateProductPartiallyMenuItems))
+                switch (DisplayMenuAndPick(updateProductPartiallyMenuItems))
                 {
                     case 1:
                         Console.WriteLine("Unesite trenutnu dostupnu količinu proizvoda");
