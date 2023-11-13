@@ -404,6 +404,50 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
         Console.ReadLine();
     }
 
+    static void DeleteEmployeeAction(Dictionary<string, DateOnly>? employees)
+    {
+        var deleteEmployeeMenuItems = new List<(int Id, string Name)>
+        {
+            (1, "Po imenu"),
+            (2, "Svi stariji od 65 godina")
+        };
+
+        switch (DisplayMenuAndPick(deleteEmployeeMenuItems))
+        {
+            case 1:
+                Console.WriteLine("Unesite ime radnika kojeg želite obrisati");
+                var name = Console.ReadLine();
+
+                if(employees.ContainsKey(name))
+                {
+                    employees.Remove(name);
+                    Console.WriteLine("Uspješno ste uklonili radnika");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("Ne postoji radnik sa tim imenom");
+                    Console.ReadKey();
+                    return;
+                }
+                break;
+            case 2:
+                DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
+                foreach (var item in employees)
+                {
+                    DateOnly dateOfBirth = item.Value;
+                    var age = currentDate.DayNumber - dateOfBirth.DayNumber;
+                    if(age > 65)
+                    {
+                        employees.Remove(item.Key);
+                    }
+                    Console.WriteLine("Zaposlenici stariji od 65 su izbrisani");
+                    Console.ReadKey();
+                }
+                break;
+
+        }
+    }
 static void BillsMenu()
 {
     throw new NotImplementedException();
