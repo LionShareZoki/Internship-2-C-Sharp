@@ -1,8 +1,8 @@
-var products = new Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount)>()
+var products = new Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)>()
 {
-    {"Riza 500g",(DateOnly.FromDateTime(DateTime.Now.AddDays(600)), 26, 7)},
-    {"Brasno 1kg",(DateOnly.FromDateTime(DateTime.Now.AddDays(356)), 26, 7)},
-    {"Coca Cola 500ml",(DateOnly.FromDateTime(DateTime.Now.AddDays(-100)), 26, 7)},
+    {"Riza 500g",(DateOnly.FromDateTime(DateTime.Now.AddDays(600)), 26, 7, 3.2m)},
+    {"Brasno 1kg",(DateOnly.FromDateTime(DateTime.Now.AddDays(356)), 26, 7, 2.1m)},
+    {"Coca Cola 500ml",(DateOnly.FromDateTime(DateTime.Now.AddDays(-100)), 26, 7, 1m)},
 };
 
 var mainMenuItems = new List<(int Id, string Name)>
