@@ -97,6 +97,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                 products.Remove(name);
 
                 Console.WriteLine($"{name} uspješno je uklonjen iz proizvoda");
+                Console.ReadKey();
                 break;
             case 2:
                 DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
@@ -106,6 +107,9 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                     if(item.Value.DateOfExpiry <= currentDate) products.Remove(item.Key);
                     
                 }
+                Console.WriteLine("Proizvodi s isteklim datumom trajanja uspješno su uklonjeni");
+                Console.ReadKey();
+
                 break;
         }
 
