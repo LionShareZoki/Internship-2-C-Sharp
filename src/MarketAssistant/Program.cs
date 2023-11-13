@@ -354,8 +354,36 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
 
 
 
-static void WorkersMenu()
+static void WorkersMenu(Dictionary<string, DateOnly>? employees)
 {
+    var employeeMenuItems = new List<(int Id, string Name)>
+    {
+        (1, "Unos radnika"),
+        (2, "Brisanje radnika"),
+        (3, "Uredivanje radnika"),
+        (4, "Ispis radnika"),
+        (5, "Glavni izbornik")
+    };
+
+    switch (DisplayMenuAndPick(employeeMenuItems))
+    {
+        case 1:
+            AddEmployeeAction(employees);
+            break;
+        case 2:
+            DeleteEmployeeAction(employees);
+            break;
+        case 3:
+            UpdateEmployeeAction(employees);
+            break;
+        case 4:
+            PrintEmployeeAction(employees);
+            break;
+        case 5:
+            return;
+
+    }
+
     static void AddEmployeeAction(Dictionary<string, DateOnly>? employees)
     {
         Console.WriteLine("Unesite ime proizvoda:");
