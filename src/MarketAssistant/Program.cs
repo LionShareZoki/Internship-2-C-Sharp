@@ -409,7 +409,7 @@ while (true)
             ProductsMenu(products);
             break;
         case 2:
-            WorkersMenu();
+            WorkersMenu(employees);
             break;
         case 3:
             BillsMenu();
