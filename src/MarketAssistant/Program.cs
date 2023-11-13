@@ -5,6 +5,13 @@ var products = new Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmoun
     {"Coca Cola 500ml",(DateOnly.FromDateTime(DateTime.Now.AddDays(-100)), 28, 1, 1)},
 };
 
+var employees = new Dictionary<string, DateOnly>
+{
+    {"Ivan Matić", DateOnly.FromDateTime(new DateTime(1999, 2, 21)) },
+    {"Ivana Ivanić", DateOnly.FromDateTime(new DateTime(1989, 4, 5)) },
+    {"Petar Marković", DateOnly.FromDateTime(new DateTime(2001, 10, 1)) }
+};
+
 var mainMenuItems = new List<(int Id, string Name)>
 {
     (1, "Artikli"),
