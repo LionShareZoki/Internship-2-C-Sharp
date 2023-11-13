@@ -14,7 +14,7 @@ var mainMenuItems = new List<(int Id, string Name)>
     (5, "Izlaz iz aplikacije")
 };
 
-static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount)>? products)
+static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, int Price)>? products)
 {
     var productMenuItems = new List<(int Id, string Name)>
     {
