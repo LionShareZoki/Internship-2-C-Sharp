@@ -356,8 +356,25 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
 
 static void WorkersMenu()
 {
-    throw new NotImplementedException();
-}
+    static void AddEmployeeAction(Dictionary<string, DateOnly>? employees)
+    {
+        Console.WriteLine("Unesite ime proizvoda:");
+        var name = Console.ReadLine();
+
+        Console.WriteLine("Unesite datum rođenja (yyyy-MM-dd):");
+        if (!DateOnly.TryParse(Console.ReadLine(), out DateOnly dateOfBirth))
+        {
+            Console.WriteLine("Neispravan format datuma. Molim vas koristite yyyy-MM-dd.");
+            Console.ReadKey();
+            return;
+        }
+
+
+        employees.Add(name, dateOfBirth);
+
+        Console.WriteLine($"{name} usješno je dodan u radnike");
+        Console.ReadLine();
+    }
 
 static void BillsMenu()
 {
