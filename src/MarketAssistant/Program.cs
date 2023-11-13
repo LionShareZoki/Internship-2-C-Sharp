@@ -224,14 +224,103 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
 
     static void PrintProductAction(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)>? products)
     {
-        foreach (var item in products)
+        var printProductMenuItems = new List<(int Id, string Name)>
+
+    {
+        (1, "Svi artikli"),
+        (2, "Svi artikli sortirani po imenu"),
+        (3, "Svi artikli sortirani po datumu silazno"),
+        (4, "Svi artikli sortirani po datumu uzlazno"),
+        (5, "Svi artikli sortirani po količini"),
+        (6, "Najprodavaniji artikl"),
+        (7, "Najmanje prodavan artikl")
+    };
+        DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
+
+        switch (DisplayMenuAndPick(printProductMenuItems))
         {
-            Console.WriteLine(item.Key);
-            Console.WriteLine(item.Value);
+
+            case 1:
+                foreach (var item in products)
+                {
+
+                    DateOnly expiryDate = item.Value.DateOfExpiry;
+                    int daysUntilExpiry = (expiryDate.DayNumber - currentDate.DayNumber);
+                    Console.WriteLine($"{item.Key} ({item.Value.AvailableAmount}) - {item.Value.Price} - {daysUntilExpiry}");
+                }
+                Console.ReadKey();
+                break;
+            case 2:
+                foreach (var item in products.OrderBy(x => x.Key))
+                {
+                    DateOnly expiryDate = item.Value.DateOfExpiry;
+                    int daysUntilExpiry = (expiryDate.DayNumber - currentDate.DayNumber);
+                    Console.WriteLine($"{item.Key} ({item.Value.AvailableAmount}) - {item.Value.Price} - {daysUntilExpiry}");
         }
         Console.ReadKey();
+                break;
+            case 3:
+                var sortedProductsDescending = products.OrderByDescending(x => (x.Value.DateOfExpiry.DayNumber - currentDate.DayNumber)).ToDictionary(x => x.Key, x => x.Value);
+                foreach (var item in sortedProductsDescending)
+                {
+                    DateOnly expiryDate = item.Value.DateOfExpiry;
+                    int daysUntilExpiry = (expiryDate.DayNumber - currentDate.DayNumber);
+                    Console.WriteLine($"{item.Key} ({item.Value.AvailableAmount}) - {item.Value.Price} - {daysUntilExpiry}");
+
+                }
+                Console.ReadKey();
+                break;
+            case 4:
+                var sortedProductsAscending = products.OrderBy(x => (x.Value.DateOfExpiry.DayNumber - currentDate.DayNumber)).ToDictionary(x => x.Key, x => x.Value);
+                foreach (var item in sortedProductsAscending)
+                {
+                    DateOnly expiryDate = item.Value.DateOfExpiry;
+                    int daysUntilExpiry = (expiryDate.DayNumber - currentDate.DayNumber);
+                    Console.WriteLine($"{item.Key} ({item.Value.AvailableAmount}) - {item.Value.Price} - {daysUntilExpiry}");
+
+                }
+                Console.ReadKey();
+                break;
+            case 5:
+                var sortedProductsByAvailableAmount = products.OrderBy(x => x.Value.AvailableAmount).ToDictionary(x => x.Key, x => x.Value);
+                foreach (var item in sortedProductsByAvailableAmount)
+                {
+                    DateOnly expiryDate = item.Value.DateOfExpiry;
+                    int daysUntilExpiry = (expiryDate.DayNumber - currentDate.DayNumber);
+                    Console.WriteLine($"{item.Key} ({item.Value.AvailableAmount}) - {item.Value.Price} - {daysUntilExpiry}");
+
+                }
+                Console.ReadKey();
+                break;
+            case 6:
+                var productSoldTheMost = products.OrderByDescending(x => x.Value.SoldAmount).FirstOrDefault();
+                if (productSoldTheMost.Value != default)
+                {
+                    DateOnly expiryDate = productSoldTheMost.Value.DateOfExpiry;
+                    int daysUntilExpiry = (expiryDate.DayNumber - DateOnly.FromDateTime(DateTime.Now).DayNumber);
+                    Console.WriteLine($"Najprodavaniji proizvod {productSoldTheMost.Key} - Prodan: {productSoldTheMost.Value.SoldAmount} puta - {daysUntilExpiry} dana do isteka datuma trajanja");
+                }
+                Console.ReadKey();
+                break;
+            case 7:
+                var productSoldTheLeast = products.OrderBy(x => x.Value.SoldAmount).FirstOrDefault();
+                if (productSoldTheLeast.Value != default)
+                {
+                    DateOnly expiryDate = productSoldTheLeast.Value.DateOfExpiry;
+                    int daysUntilExpiry = (expiryDate.DayNumber - DateOnly.FromDateTime(DateTime.Now).DayNumber);
+                    Console.WriteLine($"Najmanje prodavan proizvod: {productSoldTheLeast.Key} - Prodan: {productSoldTheLeast.Value.SoldAmount} puta - {daysUntilExpiry} dana do isteka datuma trajanja");
+                }
+                Console.ReadKey();
+                break;
+
+
+
+        }
+
     }
 }
+
+
 
 
 
