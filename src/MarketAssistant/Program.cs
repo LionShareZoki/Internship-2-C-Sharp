@@ -190,8 +190,31 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                         Console.WriteLine($"Uspješno promijenjena količina prodanih {name}");
                         Console.ReadKey();
                         break;
+                    case 3:
+                        Console.WriteLine($"Unesite novu cijenu za {name}");
+                        var newPriceInput = Console.ReadLine();
 
+                        if (!string.IsNullOrEmpty(newPriceInput))
+                        {
+                            if (int.TryParse(newPriceInput, out var newPrice))
+                            {
+                                products[name] = (products[name].DateOfExpiry, products[name].AvailableAmount, products[name].SoldAmount, newPrice);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Neispravan unos. Molimo unesite cijeli broj za cijenu.");
+                                Console.ReadKey();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unos ne smije biti prazan.");
+                            Console.ReadKey();
+                        }
 
+                        Console.WriteLine($"Uspješno promijenjena cijena {name}");
+                        Console.ReadKey();
+                        break;
                 }
 
                 break;
