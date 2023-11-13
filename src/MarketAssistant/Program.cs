@@ -448,6 +448,34 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
 
         }
     }
+
+    static void UpdateEmployeeAction(Dictionary<string, DateOnly>? employees)
+    {
+        Console.WriteLine("Odaberite radnika kojem želite promijeniti datum rođenja:");
+        var name = Console.ReadLine();
+
+        if (employees.ContainsKey(name))
+        {
+            Console.WriteLine("Unesite novi datum rođenja (yyyy-MM-dd):");
+            var newDateInput = Console.ReadLine();
+
+            if (DateOnly.TryParse(newDateInput, out DateOnly newDateOfBirth))
+            {
+                employees[name] = newDateOfBirth;
+                Console.WriteLine($"Datum rođenja za radnika {name} uspješno promijenjen.");
+            }
+            else
+            {
+                Console.WriteLine("Neispravan format datuma. Molim vas koristite yyyy-MM-dd.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Ne postoji radnik s tim imenom");
+            Console.ReadKey();
+            return;
+        }
+    }
 static void BillsMenu()
 {
     throw new NotImplementedException();
