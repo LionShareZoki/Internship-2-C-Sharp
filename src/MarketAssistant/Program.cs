@@ -1,8 +1,8 @@
 var products = new Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)>()
 {
-    {"Riza 500g",(DateOnly.FromDateTime(DateTime.Now.AddDays(600)), 26, 7, 3.2m)},
-    {"Brasno 1kg",(DateOnly.FromDateTime(DateTime.Now.AddDays(356)), 26, 7, 2.1m)},
-    {"Coca Cola 500ml",(DateOnly.FromDateTime(DateTime.Now.AddDays(-100)), 26, 7, 1m)},
+    {"Riza 500g",(DateOnly.FromDateTime(DateTime.Now.AddDays(600)), 26, 7, 3.1m)},
+    {"Brasno 1kg",(DateOnly.FromDateTime(DateTime.Now.AddDays(356)), 26, 7, 2.2m)},
+    {"Coca Cola 500ml",(DateOnly.FromDateTime(DateTime.Now.AddDays(-100)), 26, 7, 1)},
 };
 
 var mainMenuItems = new List<(int Id, string Name)>
@@ -14,7 +14,7 @@ var mainMenuItems = new List<(int Id, string Name)>
     (5, "Izlaz iz aplikacije")
 };
 
-static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, int Price)>? products)
+static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)>? products)
 {
     var productMenuItems = new List<(int Id, string Name)>
     {
@@ -203,9 +203,9 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                 {
                     foreach (var item in products)
                     {
-                        decimal newPrice = (int)Math.Round(item.Value.Price * (1 + (decimal)priceChange / 100));
+                        decimal newPrice = item.Value.Price * (1 + ((decimal)priceChange / 100));
 
-                        products[item.Key] = (products[item.Key].DateOfExpiry, products[item.Key].AvailableAmount, products[item.Key].SoldAmount, (int)newPrice);
+                        products[item.Key] = (products[item.Key].DateOfExpiry, products[item.Key].AvailableAmount, products[item.Key].SoldAmount, newPrice);
                     }
 
                     Console.WriteLine($"Uspješno promijenjena cijena svih proizvoda za {priceChange}%");
@@ -222,7 +222,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
 
     }
 
-    static void PrintProductAction(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, int Price)>? products)
+    static void PrintProductAction(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)>? products)
     {
         foreach (var item in products)
         {
