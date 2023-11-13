@@ -117,7 +117,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
 
     }
 
-    static void UpdateProductAction(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, int Price)>? products)
+    static void UpdateProductAction(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)>? products)
     {
         var updateProductMenuItems = new List<(int Id, string Name)>
         {
