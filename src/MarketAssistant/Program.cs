@@ -55,21 +55,21 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
         Console.WriteLine("Unesite datum isteka proizvoda (yyyy-MM-dd):");
         if (!DateOnly.TryParse(Console.ReadLine(), out DateOnly dateOfExpiry))
         {
-            Console.WriteLine("Invalid date format. Please use yyyy-MM-dd.");
+            Console.WriteLine("Neispravan format datuma. Molim vas koristite yyyy-MM-dd.");
             return;
         }
 
         Console.WriteLine("Unesite dostupnu količinu proizvoda:");
         if (!int.TryParse(Console.ReadLine(), out int availableAmount))
         {
-            Console.WriteLine("Invalid input for available amount. Please enter a valid integer.");
+            Console.WriteLine("Neispravan unos za količinu. Molim vas koristite cijeli broj.");
             return;
         }
 
         Console.WriteLine("Unesite cijenu proizvoda");
         if(!int.TryParse(Console.ReadLine(), out int price))
         {
-            Console.WriteLine("Invalid input for price. Please enter a valid intefer");
+            Console.WriteLine("Neispravan unos za cijenu. Molim vas unesite broj.");
             return;
         }
 
@@ -261,7 +261,7 @@ static int DisplayMenuAndPick(List<(int Id, string Name)> menuItems)
         {
             Console.WriteLine($"{menuItem.Id} {menuItem.Name}");
         }
-        Console.Write("Select one of the options: ");
+        Console.Write("Izaberite jednu od opcija: ");
 
         var userInput = Console.ReadLine();
         int? parsedInput = null;
@@ -272,14 +272,14 @@ static int DisplayMenuAndPick(List<(int Id, string Name)> menuItems)
         }
         catch (Exception)
         {
-            Console.WriteLine($"Invalid input: Cannot parse '{userInput}'.");
+            Console.WriteLine($"Neispravan unos: Ne mogu parsirati '{userInput}'.");
             Console.ReadKey();
             continue;
         }
 
         if (!menuItems.Any(item => item.Id == parsedInput))
         {
-            Console.WriteLine($"Invalid input: Id {parsedInput} does not exist.");
+            Console.WriteLine($"Neispravan unos: Id {parsedInput} ne postoji.");
             Console.ReadKey();
             continue;
         }
