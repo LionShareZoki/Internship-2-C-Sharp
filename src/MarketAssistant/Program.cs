@@ -116,7 +116,124 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
 
 
     }
+
+    static void UpdateProductAction(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, int Price)>? products)
+    {
+        var updateProductMenuItems = new List<(int Id, string Name)>
+        {
+        (1, "Zasebno uređivanje proizvoda"),
+        (2, "Popopust/poskupljenje na sve proizvode unutar trgovine"),
+        };
+
+        var updateProductPartiallyMenuItems = new List<(int Id, string Name)>
+        {
+        (1, "Promijeni količinu proizvoda"),
+        (2, "Promijeni količinu prodanih proizvoda"),
+        };
+
+        switch (DisplayMenuAndPick(updateProductMenuItems))
+        {
+            case 1:
+                Console.WriteLine("Izaberite proizvod koji želite urediti");
+                var name = Console.ReadLine();
+
+                switch(DisplayMenuAndPick(updateProductPartiallyMenuItems))
+                {
+                    case 1:
+                        Console.WriteLine("Unesite trenutnu dostupnu količinu proizvoda");
+                        var newAmountInput = Console.ReadLine();
+
+                        if (!string.IsNullOrEmpty(newAmountInput))
+                        {
+                            if (int.TryParse(newAmountInput, out var newAmount))
+                            {
+                                products[name] = (products[name].DateOfExpiry, newAmount, products[name].SoldAmount, products[name].Price);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Neispravan unos. Molimo unesite cijeli broj za količinu.");
+                                Console.ReadKey();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unos ne smije biti prazan.");
+                            Console.ReadKey();
+                        }
+
+                        Console.WriteLine($"Uspješno promijenjena količina {name}");
+                        Console.ReadKey();
+                        break;
+
+                    case 2:
+                        Console.WriteLine($"Unesite koliko {name} je prodano");
+                        var newSoldAmountInput = Console.ReadLine();
+
+                        if (!string.IsNullOrEmpty(newSoldAmountInput))
+                        {
+                            if (int.TryParse(newSoldAmountInput, out var newSoldAmount))
+                            {
+                                products[name] = (products[name].DateOfExpiry, products[name].AvailableAmount, newSoldAmount, products[name].Price);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Neispravan unos. Molimo unesite cijeli broj za količinu.");
+                                Console.ReadKey();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unos ne smije biti prazan.");
+                            Console.ReadKey();
+                        }
+
+                        Console.WriteLine($"Uspješno promijenjena količina prodanih {name}");
+                        Console.ReadKey();
+                        break;
+
+
+                }
+
+                break;
+            case 2:
+                Console.WriteLine("Unesite promijenu cijene svih proizvoda u postotku\n(negativno u slučaju popusta, pozitivno u slučaju poskupljenja))");
+                var priceChangeInput = Console.ReadLine();
+
+                if (int.TryParse(priceChangeInput, out var priceChange) && priceChange >= 1 && priceChange <= 100)
+                {
+                    foreach (var item in products)
+                    {
+                        decimal newPrice = (int)Math.Round(item.Value.Price * (1 + (decimal)priceChange / 100));
+
+                        products[item.Key] = (products[item.Key].DateOfExpiry, products[item.Key].AvailableAmount, products[item.Key].SoldAmount, (int)newPrice);
+                    }
+
+                    Console.WriteLine($"Uspješno promijenjena cijena svih proizvoda za {priceChange}%");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("Neispravan unos. Molimo unesite cijeli broj između 1 i 100.");
+                    Console.ReadKey();
+                }
+                break;
+
+        }
+
+    }
+
+    static void PrintProductAction(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, int Price)>? products)
+    {
+        foreach (var item in products)
+        {
+            Console.WriteLine(item.Key);
+            Console.WriteLine(item.Value);
+        }
+        Console.ReadKey();
+    }
 }
+
+
 
 static void WorkersMenu()
 {
