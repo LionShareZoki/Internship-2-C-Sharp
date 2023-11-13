@@ -66,7 +66,14 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
             return;
         }
 
-        products.Add(name, (dateOfExpiry, availableAmount, 0));
+        Console.WriteLine("Unesite cijenu proizvoda");
+        if(!int.TryParse(Console.ReadLine(), out int price))
+        {
+            Console.WriteLine("Invalid input for price. Please enter a valid intefer");
+            return;
+        }
+
+        products.Add(name, (dateOfExpiry, availableAmount, 0, price));
 
         Console.WriteLine($"{name} usješno je dodan u proizvode");
        
