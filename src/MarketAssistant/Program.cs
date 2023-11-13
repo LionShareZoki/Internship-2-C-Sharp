@@ -476,6 +476,47 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
             return;
         }
     }
+
+    static void PrintEmployeeAction(Dictionary<string, DateOnly>? employees)
+    {
+        var printEmployeeMenuItems = new List<(int Id, string Name)>
+        {
+            (1, "Svi radnici"),
+            (2, "Svi radnici kojima je rođendan u tekućem mjesecu")
+        };
+
+        var currentDate = DateOnly.FromDateTime(DateTime.Now);
+
+
+        switch (DisplayMenuAndPick(printEmployeeMenuItems))
+        {
+            case 1:
+                foreach (var item in employees)
+                {
+                    int age = currentDate.Year - item.Value.Year;
+                    Console.WriteLine($"{item.Key} - {age}");
+                }
+                Console.ReadKey();
+                break;
+            case 2:
+
+                foreach (var item in employees)
+                {
+                    if (item.Value.Month == currentDate.Month)
+                    {
+                        int age = currentDate.Year - item.Value.Year;
+                        Console.WriteLine($"{item.Key} - {age} godina (rođendan u tekućem mjesecu)");
+                    }
+                }
+                Console.ReadKey();
+                break;
+        }
+
+    }
+    
+};
+
+
 static void BillsMenu()
 {
     throw new NotImplementedException();
