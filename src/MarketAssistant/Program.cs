@@ -40,8 +40,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
             PrintProductAction(products);
             break;
         case 5:
-            Console.WriteLine("glavni izb");
-            break;
+            return;
 
     }
 
