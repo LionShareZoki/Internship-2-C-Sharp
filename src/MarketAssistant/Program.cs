@@ -688,6 +688,13 @@ static void BillsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAm
 
         return total;
     }
+
+
+    static int GetNextBillId(Dictionary<int, (DateTime DateAndTime, decimal TotalPrice, List<(string ProductName, int Quantity, decimal Price)> Items)> bills)
+    {
+        return bills.Count > 0 ? bills.Keys.Max() + 1 : 1;
+    }
+}
     }
 
 static int DisplayMenuAndPick(List<(int Id, string Name)> menuItems)
