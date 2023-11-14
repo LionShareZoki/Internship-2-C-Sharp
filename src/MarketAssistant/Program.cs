@@ -921,26 +921,26 @@ static void StatisticsMenu(string password, Dictionary<string, (DateOnly DateOfE
                 return;
             }
 
-            var expenses = otherExpenses + rent + totalWages;
-            var monthlyProfits = new Dictionary<DateTime, decimal>();
-            var monthlyExpenses = new Dictionary<DateTime, decimal>();
+            decimal profitsMonth = 0;
+            decimal expenses = rent + otherExpenses + totalWages;
+            DateOnly targetDateTime = new DateOnly(year, month, 1);
 
 
-
-            foreach (var entry in monthlyProfits)
+            foreach (var bill in bills)
             {
-                DateTime monthKey = entry.Key;
-                decimal totalProfit = entry.Value;
+                int billKey = bill.Key;
+                DateTime dateAndTime = bill.Value.DateAndTime;
 
-                if (monthlyExpenses.ContainsKey(monthKey))
+                DateOnly billDateOnly = new DateOnly(dateAndTime.Year, dateAndTime.Month, 1);
+
+                if (billDateOnly == targetDateTime)
                 {
-                    totalProfit -= monthlyExpenses[monthKey];
+                    profitsMonth += bill.Value.TotalPrice;
                 }
-
-                Console.WriteLine($"Profit for {entry.Key.ToString("MMMM yyyy")}: {totalProfit}");
             }
 
-            Console.WriteLine("Izračun uspješno završen.");
+
+            Console.WriteLine($"date: {targetDateTime} - profit: {profitsMonth - expenses}");
             Console.ReadKey();
         }
 
