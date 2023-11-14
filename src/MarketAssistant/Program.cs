@@ -695,6 +695,90 @@ static void BillsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAm
         return bills.Count > 0 ? bills.Keys.Max() + 1 : 1;
     }
 }
+static void StatisticsMenu(string password, Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)> products)
+{
+    Console.WriteLine("Unesite šifru za pristup:");
+    string passwordInput = Console.ReadLine();
+
+    if(CheckPassword(passwordInput, password))
+    {
+    var productMenuItems = new List<(int Id, string Name)>
+    {
+        (1, "Ukupan broj artikala u trgovini"),
+        (2, "Vrijednost artikala koji nisu još prodani"),
+        (3, "Vrijednost artikala koji su prodani"),
+        (4, "Stanje po mjesecima"),
+        (5, "Glavni izbornik")
+    };
+
+    switch(DisplayMenuAndPick(productMenuItems))
+        {
+            case 1:
+                int totalProducts = CalculateTotalProducts(products);
+                Console.WriteLine($"Ukupan broj artikala: {totalProducts}");
+                Console.ReadKey();
+                break;
+            case 2:
+                decimal valueOfAvailableProducts = CalculateAvailableProductsWorth(products);
+                Console.WriteLine($"Vrijednost artikala koji nisu još prodani: {valueOfAvailableProducts}");
+                Console.ReadKey();
+                break;
+            case 3:
+                decimal valueOfSoldProducts = CalculateSoldProductsWorth(products);
+                Console.WriteLine($"Vrijednost artikala koji su prodani: {valueOfSoldProducts}");
+                Console.ReadKey();
+                break;
+            case 4:
+                break;
+
+
+        }
+
+
+        static int CalculateTotalProducts(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)> products)
+        {
+            int totalProducts = 0;
+            foreach (var product in products)
+            {
+                totalProducts += product.Value.AvailableAmount;
+            }
+            return totalProducts;
+        }
+
+        static decimal CalculateAvailableProductsWorth(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)> products)
+        {
+            decimal value = 0;
+            foreach (var product in products)
+            {
+                value += product.Value.AvailableAmount * product.Value.Price;
+            }
+            return value;
+        }
+
+        static decimal CalculateSoldProductsWorth(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)> products)
+        {
+            decimal value = 0;
+            foreach (var product in products)
+            {
+                value += product.Value.SoldAmount * product.Value.Price;
+            }
+            return value;
+        }
+
+       
+    } else
+    {
+        Console.WriteLine("Neispravna lozinka.");
+        Console.ReadKey();
+    }
+
+
+
+    static bool CheckPassword(string enteredPassword, string actualPassword)
+    {
+        return enteredPassword == actualPassword;
+    }
+    
     }
 
 static int DisplayMenuAndPick(List<(int Id, string Name)> menuItems)
