@@ -1,3 +1,4 @@
+﻿using System.Diagnostics;
 using System.Globalization;
 
 string password = "1950";
@@ -11,9 +12,9 @@ var products = new Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmoun
 
 var employees = new Dictionary<string, DateOnly>
 {
-    {"Ivan Matić", DateOnly.FromDateTime(new DateTime(1999, 2, 21)) },
-    {"Ivana Ivanić", DateOnly.FromDateTime(new DateTime(1989, 4, 5)) },
-    {"Petar Marković", DateOnly.FromDateTime(new DateTime(2001, 10, 1)) }
+    {"Ivan Livaja", DateOnly.FromDateTime(new DateTime(1999, 2, 21)) },
+    {"Ivana Baturina", DateOnly.FromDateTime(new DateTime(1989, 4, 5)) },
+    {"Petar Marin", DateOnly.FromDateTime(new DateTime(2001, 10, 1)) }
 };
 
 var bills = new Dictionary<int, (DateTime DateAndTime, decimal TotalPrice, List<(string ProductName, int Quantity, decimal Price)> Items)>()
@@ -99,11 +100,17 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
             return;
         }
 
-        products.Add(name, (dateOfExpiry, availableAmount, 0, price));
+        Console.WriteLine("Jeste li sigurni da želite dodati proizvod? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+        var answer = Console.ReadLine();
 
+        if (answer.ToUpper() == "DA")
+        {
+            products.Add(name, (dateOfExpiry, availableAmount, 0, price));
+        }
+        else return;
+        Console.Clear();
         Console.WriteLine($"{name} usješno je dodan u proizvode");
-       
-        Console.ReadLine();
+        Console.ReadKey();
     }
 
     static void DeleteProductAction(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)>? products)
@@ -120,21 +127,37 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                 Console.WriteLine("Izaberite proizvod koji želite ukloniti");
                 var name = Console.ReadLine();
 
-                products.Remove(name);
+                Console.WriteLine("Jeste li sigurni da želite ukloniti proizvod? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+                var answer = Console.ReadLine();
 
+                if (answer.ToUpper() == "DA")
+                {
+                    products.Remove(name);
+                }
+                else return;
+                Console.Clear();
                 Console.WriteLine($"{name} uspješno je uklonjen iz proizvoda");
                 Console.ReadKey();
                 break;
             case 2:
                 DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
 
-                foreach (var item in products)
+                Console.WriteLine("Jeste li sigurni da želite ukloniti proizvode? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+                var answerCase2 = Console.ReadLine();
+
+                if (answerCase2.ToUpper() == "DA")
                 {
-                    if (item.Value.DateOfExpiry <= currentDate) products.Remove(item.Key);
-                    
+
+                    foreach (var item in products)
+                    {
+                        if (item.Value.DateOfExpiry <= currentDate) products.Remove(item.Key);
+
+                    }
+                    Console.Clear() ;
+                    Console.WriteLine("Proizvodi s isteklim datumom trajanja uspješno su uklonjeni");
+                    Console.ReadKey();
                 }
-                Console.WriteLine("Proizvodi s isteklim datumom trajanja uspješno su uklonjeni");
-                Console.ReadKey();
+                else return;
 
                 break;
         }
@@ -174,7 +197,14 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                         {
                             if (int.TryParse(newAmountInput, out var newAmount))
                             {
-                                products[name] = (products[name].DateOfExpiry, newAmount, products[name].SoldAmount, products[name].Price);
+                                Console.WriteLine("Jeste li sigurni da želite promijeniti količinu? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+                                var answer = Console.ReadLine();
+
+                                if (answer.ToUpper() == "DA")
+                                {
+                                    products[name] = (products[name].DateOfExpiry, newAmount, products[name].SoldAmount, products[name].Price);
+                                }
+                                else return;
                             }
                             else
                             {
@@ -187,7 +217,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                             Console.WriteLine("Unos ne smije biti prazan.");
                             Console.ReadKey();
                         }
-
+                        Console.Clear();
                         Console.WriteLine($"Uspješno promijenjena količina {name}");
                         Console.ReadKey();
                         break;
@@ -200,7 +230,17 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                         {
                             if (int.TryParse(newSoldAmountInput, out var newSoldAmount))
                             {
-                                products[name] = (products[name].DateOfExpiry, products[name].AvailableAmount, newSoldAmount, products[name].Price);
+
+                                Console.WriteLine("Jeste li sigurni da želite promijeniti količinu prodanih? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+                                var answer = Console.ReadLine();
+
+                                if (answer.ToUpper() == "DA")
+                                {
+                                    products[name] = (products[name].DateOfExpiry, products[name].AvailableAmount, newSoldAmount, products[name].Price);
+                                }
+                                else return;
+
+
                             }
                             else
                             {
@@ -225,7 +265,18 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                         {
                             if (int.TryParse(newPriceInput, out var newPrice))
                             {
-                                products[name] = (products[name].DateOfExpiry, products[name].AvailableAmount, products[name].SoldAmount, newPrice);
+
+                                Console.WriteLine("Jeste li sigurni da želite promijeniti cijenu? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+                                var answer = Console.ReadLine();
+
+                                if (answer.ToUpper() == "DA")
+                                {
+                                    products[name] = (products[name].DateOfExpiry, products[name].AvailableAmount, products[name].SoldAmount, newPrice);
+
+                                }
+                                else return;
+
+                            
                             }
                             else
                             {
@@ -251,21 +302,30 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
 
                 if (int.TryParse(priceChangeInput, out var priceChange) && priceChange >= 1 && priceChange <= 100)
                 {
-                    foreach (var item in products)
+
+                    Console.WriteLine("Jeste li sigurni da želite promijeniti cijene? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+                    var answer = Console.ReadLine();
+
+                    if (answer.ToUpper() == "DA")
                     {
-                        decimal newPrice = item.Value.Price * (1 + ((decimal)priceChange / 100));
+                        foreach (var item in products)
+                        {
+                            decimal newPrice = item.Value.Price * (1 + ((decimal)priceChange / 100));
 
-                        products[item.Key] = (products[item.Key].DateOfExpiry, products[item.Key].AvailableAmount, products[item.Key].SoldAmount, newPrice);
+
+                            products[item.Key] = (products[item.Key].DateOfExpiry, products[item.Key].AvailableAmount, products[item.Key].SoldAmount, newPrice);
+                        }
+                        Console.Clear();
+                        Console.WriteLine($"Uspješno promijenjena cijena svih proizvoda za {priceChange}%");
+                        Console.ReadKey();
                     }
-
-                    Console.WriteLine($"Uspješno promijenjena cijena svih proizvoda za {priceChange}%");
-                    Console.ReadKey();
+                    else
+                    {
+                        Console.WriteLine("Neispravan unos. Molimo unesite cijeli broj između 1 i 100.");
+                        Console.ReadKey();
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("Neispravan unos. Molimo unesite cijeli broj između 1 i 100.");
-                    Console.ReadKey();
-                }
+                else return;
                 break;
 
         }
@@ -291,9 +351,9 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
         {
 
             case 1:
+                Console.Clear();
                 foreach (var item in products)
                 {
-
                     DateOnly expiryDate = item.Value.DateOfExpiry;
                     int daysUntilExpiry = (expiryDate.DayNumber - currentDate.DayNumber);
                     Console.WriteLine($"{item.Key} ({item.Value.AvailableAmount}) - {item.Value.Price} - {daysUntilExpiry}");
@@ -301,15 +361,17 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                 Console.ReadKey();
                 break;
             case 2:
+                Console.Clear();
                 foreach (var item in products.OrderBy(x => x.Key))
                 {
                     DateOnly expiryDate = item.Value.DateOfExpiry;
                     int daysUntilExpiry = (expiryDate.DayNumber - currentDate.DayNumber);
                     Console.WriteLine($"{item.Key} ({item.Value.AvailableAmount}) - {item.Value.Price} - {daysUntilExpiry}");
-        }
-        Console.ReadKey();
+                }
+                Console.ReadKey();
                 break;
             case 3:
+                Console.Clear();
                 var sortedProductsDescending = products.OrderByDescending(x => (x.Value.DateOfExpiry.DayNumber - currentDate.DayNumber)).ToDictionary(x => x.Key, x => x.Value);
                 foreach (var item in sortedProductsDescending)
                 {
@@ -321,6 +383,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                 Console.ReadKey();
                 break;
             case 4:
+                Console.Clear();
                 var sortedProductsAscending = products.OrderBy(x => (x.Value.DateOfExpiry.DayNumber - currentDate.DayNumber)).ToDictionary(x => x.Key, x => x.Value);
                 foreach (var item in sortedProductsAscending)
                 {
@@ -332,6 +395,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                 Console.ReadKey();
                 break;
             case 5:
+                Console.Clear();
                 var sortedProductsByAvailableAmount = products.OrderBy(x => x.Value.AvailableAmount).ToDictionary(x => x.Key, x => x.Value);
                 foreach (var item in sortedProductsByAvailableAmount)
                 {
@@ -343,6 +407,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                 Console.ReadKey();
                 break;
             case 6:
+                Console.Clear();
                 var productSoldTheMost = products.OrderByDescending(x => x.Value.SoldAmount).FirstOrDefault();
                 if (productSoldTheMost.Value != default)
                 {
@@ -353,6 +418,7 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
                 Console.ReadKey();
                 break;
             case 7:
+                Console.Clear();
                 var productSoldTheLeast = products.OrderBy(x => x.Value.SoldAmount).FirstOrDefault();
                 if (productSoldTheLeast.Value != default)
                 {
@@ -369,10 +435,6 @@ static void ProductsMenu(Dictionary<string, (DateOnly DateOfExpiry, int Availabl
 
     }
 }
-
-
-
-
 
 static void WorkersMenu(Dictionary<string, DateOnly>? employees)
 {
@@ -406,7 +468,7 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
 
     static void AddEmployeeAction(Dictionary<string, DateOnly>? employees)
     {
-        Console.WriteLine("Unesite ime proizvoda:");
+        Console.WriteLine("Unesite ime radnika (bez znakova č, ć, đ, ž):");
         var name = Console.ReadLine();
 
         Console.WriteLine("Unesite datum rođenja (yyyy-MM-dd):");
@@ -417,8 +479,14 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
             return;
         }
 
+        Console.WriteLine("Jeste li sigurni da želite dodati zaposlenika? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+        var answer = Console.ReadLine();
 
-        employees.Add(name, dateOfBirth);
+        if (answer.ToUpper() == "DA")
+        {
+            employees.Add(name, dateOfBirth);
+        }
+        else return;
 
         Console.WriteLine($"{name} usješno je dodan u radnike");
         Console.ReadLine();
@@ -440,7 +508,17 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
 
                 if(employees.ContainsKey(name))
                 {
-                    employees.Remove(name);
+
+                    Console.WriteLine("Jeste li sigurni da želite ukloniti zaposlenika? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+                    var answerDeleteEmployee = Console.ReadLine();
+
+                    if (answerDeleteEmployee.ToUpper() == "DA")
+                    {
+                        employees.Remove(name);
+
+                    }
+                    else return;
+                    Console.Clear();
                     Console.WriteLine("Uspješno ste uklonili radnika");
                     Console.ReadKey();
                 }
@@ -453,17 +531,25 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
                 break;
             case 2:
                 DateOnly currentDate = DateOnly.FromDateTime(DateTime.Now);
-                foreach (var item in employees)
+                Console.WriteLine("Jeste li sigurni da želite ukloniti zaposlenika? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+                var answer = Console.ReadLine();
+
+                if (answer.ToUpper() == "DA")
                 {
-                    DateOnly dateOfBirth = item.Value;
-                    var age = currentDate.DayNumber - dateOfBirth.DayNumber;
-                    if(age > 65)
+                    foreach (var item in employees)
                     {
-                        employees.Remove(item.Key);
-                    }
-                    Console.WriteLine("Zaposlenici stariji od 65 su izbrisani");
-                    Console.ReadKey();
-                }
+                        DateOnly dateOfBirth = item.Value;
+                        var age = currentDate.DayNumber - dateOfBirth.DayNumber;
+                        if (age > 65)
+                        {
+                            employees.Remove(item.Key);
+                        }
+                        Console.WriteLine("Zaposlenici stariji od 65 su izbrisani");
+                        Console.ReadKey();
+
+                    }  }
+                else return;
+
                 break;
 
         }
@@ -474,6 +560,7 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
         Console.WriteLine("Odaberite radnika kojem želite promijeniti datum rođenja:");
         var name = Console.ReadLine();
 
+
         if (employees.ContainsKey(name))
         {
             Console.WriteLine("Unesite novi datum rođenja (yyyy-MM-dd):");
@@ -481,7 +568,17 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
 
             if (DateOnly.TryParse(newDateInput, out DateOnly newDateOfBirth))
             {
-                employees[name] = newDateOfBirth;
+
+                Console.WriteLine("Jeste li sigurni da želite promijeniti zaposleniku datum rođenja? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+                var answer = Console.ReadLine();
+
+                if (answer.ToUpper() == "DA")
+                {
+                    employees[name] = newDateOfBirth;
+
+                }
+                else return;
+
                 Console.WriteLine($"Datum rođenja za radnika {name} uspješno promijenjen.");
             }
             else
@@ -511,6 +608,7 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
         switch (DisplayMenuAndPick(printEmployeeMenuItems))
         {
             case 1:
+                Console.Clear();
                 foreach (var item in employees)
                 {
                     int age = currentDate.Year - item.Value.Year;
@@ -519,7 +617,7 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
                 Console.ReadKey();
                 break;
             case 2:
-
+                Console.Clear();
                 foreach (var item in employees)
                 {
                     if (item.Value.Month == currentDate.Month)
@@ -590,10 +688,17 @@ static void BillsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAm
 
                 if (int.TryParse(Console.ReadLine(), out int quantity) && quantity <= products[productName].AvailableAmount)
                 {
-                    newBill.Add((productName, quantity, products[productName].Price));
-                    totalBillPrice += quantity * products[productName].Price;
 
-                    products[productName] = (products[productName].DateOfExpiry, products[productName].AvailableAmount - quantity, products[productName].SoldAmount + quantity, products[productName].Price);
+                    Console.WriteLine("Jeste li sigurni da želite dodati proizvod? (Upišite 'da' za potvrdu ili bilo što drugo za poništavanje)");
+                    var answer = Console.ReadLine();
+                    if (answer.ToUpper() == "DA")
+                    {
+                        newBill.Add((productName, quantity, products[productName].Price));
+                        totalBillPrice += quantity * products[productName].Price;
+
+                        products[productName] = (products[productName].DateOfExpiry, products[productName].AvailableAmount - quantity, products[productName].SoldAmount + quantity, products[productName].Price);
+                    }
+                    else return;
                 }
                 else
                 {
@@ -606,6 +711,7 @@ static void BillsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAm
                 Console.WriteLine($"Proizvod '{productName}' ne postoji. Pokušajte ponovno.");
             }
         }
+
 
         var dateTimeNow = DateTime.Now;
         var newBillEntry = (dateTimeNow, totalBillPrice, newBill);
@@ -643,6 +749,8 @@ static void BillsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAm
                 products[item.ProductName] = (products[item.ProductName].DateOfExpiry, products[item.ProductName].AvailableAmount + item.Quantity, products[item.ProductName].SoldAmount - item.Quantity, products[item.ProductName].Price);
             }
         }
+    }
+
     static void PrintBillsAction (Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)> products,
     Dictionary< int, (DateTime DateAndTime, decimal TotalPrice, List<(string ProductName, int Quantity, decimal Price)> Items) > bills)
     {
@@ -677,6 +785,7 @@ static void BillsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAm
 
 
     }
+
     static decimal CalculateTotalPrice(List<(string ProductName, int Quantity, decimal Price)> items)
     {
         decimal total = 0;
@@ -695,7 +804,8 @@ static void BillsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAm
         return bills.Count > 0 ? bills.Keys.Max() + 1 : 1;
     }
 }
-static void StatisticsMenu(string password, Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)> products)
+
+static void StatisticsMenu(string password, Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)> products, Dictionary<int, (DateTime DateAndTime, decimal TotalPrice, List<(string ProductName, int Quantity, decimal Price)> Items)>? bills)
 {
     Console.WriteLine("Unesite šifru za pristup:");
     string passwordInput = Console.ReadLine();
@@ -729,7 +839,11 @@ static void StatisticsMenu(string password, Dictionary<string, (DateOnly DateOfE
                 Console.ReadKey();
                 break;
             case 4:
+                string case4PasswordInput = Console.ReadLine();
+                CalculateProfitLoss(products, bills);
                 break;
+            case 5:
+                return;
 
 
         }
@@ -765,12 +879,76 @@ static void StatisticsMenu(string password, Dictionary<string, (DateOnly DateOfE
             return value;
         }
 
-       
-    } else
-    {
-        Console.WriteLine("Neispravna lozinka.");
-        Console.ReadKey();
-    }
+        static void CalculateProfitLoss(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)> products, Dictionary<int, (DateTime DateAndTime, decimal TotalPrice, List<(string ProductName, int Quantity, decimal Price)> Items)>? bills)
+        {
+            Console.WriteLine("Unesite mjesec (1-12): ");
+            if (!int.TryParse(Console.ReadLine(), out int month) || month < 1 || month > 12)
+            {
+                Console.WriteLine("Neispravan unos za mjesec.");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.WriteLine("Unesite godinu: ");
+            if (!int.TryParse(Console.ReadLine(), out int year))
+            {
+                Console.WriteLine("Neispravan unos za godinu.");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.WriteLine("Unesite ukupne plaće: ");
+            if (!decimal.TryParse(Console.ReadLine(), out decimal totalWages))
+            {
+                Console.WriteLine("Neispravan unos za ukupne plaće.");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.WriteLine("Unesite iznos najma: ");
+            if (!decimal.TryParse(Console.ReadLine(), out decimal rent))
+            {
+                Console.WriteLine("Neispravan unos za iznos najma.");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.WriteLine("Unesite ostale troškove: ");
+            if (!decimal.TryParse(Console.ReadLine(), out decimal otherExpenses))
+            {
+                Console.WriteLine("Neispravan unos za ostale troškove.");
+                Console.ReadKey();
+                return;
+            }
+
+            var expenses = otherExpenses + rent + totalWages;
+            var monthlyProfits = new Dictionary<DateTime, decimal>();
+            var monthlyExpenses = new Dictionary<DateTime, decimal>();
+
+
+
+            foreach (var entry in monthlyProfits)
+            {
+                DateTime monthKey = entry.Key;
+                decimal totalProfit = entry.Value;
+
+                if (monthlyExpenses.ContainsKey(monthKey))
+                {
+                    totalProfit -= monthlyExpenses[monthKey];
+                }
+
+                Console.WriteLine($"Profit for {entry.Key.ToString("MMMM yyyy")}: {totalProfit}");
+            }
+
+            Console.WriteLine("Izračun uspješno završen.");
+            Console.ReadKey();
+        }
+
+        } else
+        {
+            Console.WriteLine("Neispravna lozinka.");
+            Console.ReadKey();
+        }
 
 
 
@@ -779,7 +957,7 @@ static void StatisticsMenu(string password, Dictionary<string, (DateOnly DateOfE
         return enteredPassword == actualPassword;
     }
     
-    }
+}
 
 static int DisplayMenuAndPick(List<(int Id, string Name)> menuItems)
 {
@@ -832,7 +1010,7 @@ while (true)
             BillsMenu(products, bills);
             break;
         case 4:
-            StatisticsMenu(password, products);
+            StatisticsMenu(password, products, bills);
             break;
         case 5:
             return;
