@@ -1,7 +1,11 @@
+using System.Globalization;
+
+string password = "1950";
+
 var products = new Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)>()
 {
-    {"Riza 500g",(DateOnly.FromDateTime(DateTime.Now.AddDays(600)), 40, 21, 3.1m)},
-    {"Brasno 1kg",(DateOnly.FromDateTime(DateTime.Now.AddDays(356)), 27, 50, 2.2m)},
+    {"Riza 500g",(DateOnly.FromDateTime(DateTime.Now.AddDays(600)), 40, 2, 3.1m)},
+    {"Brasno 1kg",(DateOnly.FromDateTime(DateTime.Now.AddDays(356)), 27, 1, 2.2m)},
     {"Coca Cola 500ml",(DateOnly.FromDateTime(DateTime.Now.AddDays(-100)), 28, 1, 1)},
 };
 
@@ -11,6 +15,22 @@ var employees = new Dictionary<string, DateOnly>
     {"Ivana Ivanić", DateOnly.FromDateTime(new DateTime(1989, 4, 5)) },
     {"Petar Marković", DateOnly.FromDateTime(new DateTime(2001, 10, 1)) }
 };
+
+var bills = new Dictionary<int, (DateTime DateAndTime, decimal TotalPrice, List<(string ProductName, int Quantity, decimal Price)> Items)>()
+{
+    {
+        1, (new DateTime(2023, 11, 5), 3.1m, new List<(string, int, decimal)> { ("Riza 500g", 1, 3.1m) })
+    },
+    {
+        2, (new DateTime(2023, 11, 5), 6.3m, new List<(string, int, decimal)>
+        {
+            ("Riza 500g", 1, 3.1m),
+            ("Brasno 1kg", 1, 2.2m),
+            ("Coca Cola 500ml", 1, 1m)
+        })
+    }
+};
+
 
 var mainMenuItems = new List<(int Id, string Name)>
 {
