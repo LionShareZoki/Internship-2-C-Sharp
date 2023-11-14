@@ -643,6 +643,40 @@ static void BillsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAm
                 products[item.ProductName] = (products[item.ProductName].DateOfExpiry, products[item.ProductName].AvailableAmount + item.Quantity, products[item.ProductName].SoldAmount - item.Quantity, products[item.ProductName].Price);
             }
         }
+    static void PrintBillsAction (Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)> products,
+    Dictionary< int, (DateTime DateAndTime, decimal TotalPrice, List<(string ProductName, int Quantity, decimal Price)> Items) > bills)
+    {
+        Console.WriteLine("Svi računi:");
+
+        foreach (var bill in bills)
+        {
+            Console.WriteLine($"#{bill.Key} - {bill.Value.DateAndTime} - {CalculateTotalPrice(bill.Value.Items)}");
+        }
+
+
+        Console.WriteLine("Odaberite račun za detalje (unestite id računa):");
+        if (int.TryParse(Console.ReadLine(), out int selectedBillId) && bills.ContainsKey(selectedBillId))
+        {
+            var selectedBill = bills[selectedBillId];
+
+            Console.WriteLine($"{selectedBillId} - {selectedBill.DateAndTime} - Ukupni iznos: {selectedBill.TotalPrice}");
+            Console.WriteLine("Proizvodi:");
+
+            foreach (var item in selectedBill.Items)
+            {
+                Console.WriteLine($"{item.ProductName} - Količina: {item.Quantity} - Cijena po komadu: {item.Price}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Neispravan unos ili račun ne postoji.");
+        }
+
+        Console.ReadKey();
+
+
+
+    }
     }
 
 static int DisplayMenuAndPick(List<(int Id, string Name)> menuItems)
