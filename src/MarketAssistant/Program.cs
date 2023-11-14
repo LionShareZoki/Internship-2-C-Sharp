@@ -558,11 +558,92 @@ static void BillsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAm
             return;
     }
 
-{
-    throw new NotImplementedException();
-}
+    static void CreateBillsAction(
+    Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)> products,
+    Dictionary<int, (DateTime DateAndTime, decimal TotalPrice, List<(string ProductName, int Quantity, decimal Price)> Items)> bills)
+    {
+        int billId = GetNextBillId(bills);
 
+        var newBill = new List<(string ProductName, int Quantity, decimal Price)>();
+        decimal totalBillPrice = 0;
 
+        foreach (var product in products)
+        {
+            Console.WriteLine($"{product.Key} - Dostupna količina: {product.Value.AvailableAmount}, Cijena: {product.Value.Price}");
+        }
+
+        bool isConfirmed = false;
+
+        while (true)
+        {
+            Console.WriteLine("Unesite ime proizvoda (ili 'K' za kraj):");
+            string productName = Console.ReadLine();
+
+            if (productName.ToUpper() == "K")
+            {
+                break;
+            }
+
+            if (products.ContainsKey(productName))
+            {
+                Console.WriteLine($"Unesite količinu za {productName}:");
+
+                if (int.TryParse(Console.ReadLine(), out int quantity) && quantity <= products[productName].AvailableAmount)
+                {
+                    newBill.Add((productName, quantity, products[productName].Price));
+                    totalBillPrice += quantity * products[productName].Price;
+
+                    products[productName] = (products[productName].DateOfExpiry, products[productName].AvailableAmount - quantity, products[productName].SoldAmount + quantity, products[productName].Price);
+                }
+                else
+                {
+                    Console.WriteLine("Neispravan unos. Pokušajte ponovno.");
+                    continue;
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Proizvod '{productName}' ne postoji. Pokušajte ponovno.");
+            }
+        }
+
+        var dateTimeNow = DateTime.Now;
+        var newBillEntry = (dateTimeNow, totalBillPrice, newBill);
+
+        bills.Add(billId, newBillEntry);
+
+        Console.WriteLine($"\nRačun #{billId} uspješno kreiran.\n");
+        Console.WriteLine("Proizvodi na računu:");
+        foreach (var item in newBill)
+        {
+            Console.WriteLine($"{item.ProductName} - Količina: {item.Quantity} - Cijena po komadu: {item.Price}");
+        }
+
+        Console.WriteLine($"Ukupna cijena: {totalBillPrice}");
+
+        Console.Write("Unesite 'P' za potvrdu ili 'O' za otkazivanje računa: ");
+        var confirmationKey = Console.ReadKey().KeyChar;
+
+        if (confirmationKey == 'P' || confirmationKey == 'p')
+        {
+            Console.WriteLine("\nRačun je potvrđen. Proizvodi su skinuti sa stanja.\n");
+            isConfirmed = true;
+        }
+        else
+        {
+            Console.WriteLine("\nRačun je otkazan. Proizvodi nisu skinuti sa stanja.\n");
+        }
+
+        Console.ReadKey();
+        if (!isConfirmed)
+        {
+            bills.Remove(billId);
+            foreach (var item in newBill)
+            {
+                products[item.ProductName] = (products[item.ProductName].DateOfExpiry, products[item.ProductName].AvailableAmount + item.Quantity, products[item.ProductName].SoldAmount - item.Quantity, products[item.ProductName].Price);
+            }
+        }
+    }
 
 static int DisplayMenuAndPick(List<(int Id, string Name)> menuItems)
 {
