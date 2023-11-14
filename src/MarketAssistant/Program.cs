@@ -539,10 +539,25 @@ static void WorkersMenu(Dictionary<string, DateOnly>? employees)
 static void BillsMenu(Dictionary<string, (DateOnly DateOfExpiry, int AvailableAmount, int SoldAmount, decimal Price)>? products,
     Dictionary<int, (DateTime DateAndTime, decimal TotalPrice, List<(string ProductName, int Quantity, decimal Price)> Items)>? bills)
 {
-    throw new NotImplementedException();
-}
+    var billsMenuItems = new List<(int Id, string Name)>
+    {
+        (1, "Unos novih računa"),
+        (2, "Ispis računa"),
+        (3, "Povratak u prethodni meni")
+    };
 
-static void StatisticsMenu()
+    switch (DisplayMenuAndPick(billsMenuItems))
+    {
+        case 1:
+            CreateBillsAction(products, bills);
+            break;
+        case 2:
+            PrintBillsAction(products, bills);
+            break;
+        case 3:
+            return;
+    }
+
 {
     throw new NotImplementedException();
 }
