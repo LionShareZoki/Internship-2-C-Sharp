@@ -829,10 +829,10 @@ while (true)
             WorkersMenu(employees);
             break;
         case 3:
-            BillsMenu();
+            BillsMenu(products, bills);
             break;
         case 4:
-            StatisticsMenu();
+            StatisticsMenu(password, products);
             break;
         case 5:
             return;
